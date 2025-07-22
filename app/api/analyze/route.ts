@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Call the C++ analyzer backend
-    const analyzerRes = await fetch('http://localhost:8000/analyze', {
+    const analyzerRes = await fetch('https://post-analysis-app-1.onrender.com/analyze', {
       method: 'POST',
       body,
     });
