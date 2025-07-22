@@ -1,5 +1,7 @@
 #include "httplib.h"
 #include "nlohmann/json.hpp"
+#include <cstdlib> // for std::getenv
+#include <string>  // for std::stoi
 
 using json = nlohmann::json;
 
@@ -35,6 +37,9 @@ int main() {
         res.set_content(response.dump(), "application/json");
     });
 
-    std::cout << "Server running on port 8000..." << std::endl;
-    svr.listen("0.0.0.0", 8080);
+    std::cout << "Server running on port ..." << std::endl;
+   const char* portEnv = std::getenv("PORT");
+   int port = portEnv ? std::stoi(portEnv) : 8000; // fallback to 8000 if PORT is not set
+   svr.listen("0.0.0.0", port);
+    
 }
