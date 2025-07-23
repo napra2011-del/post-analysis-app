@@ -19,16 +19,12 @@ export async function POST(req: NextRequest) {
       throw new Error('C++ analyzer failed');
     }
 
-    const analysisResult = await analyzerRes.json();
-    const { wordCount, keywordFrequency } = analysisResult;
+    const { wordCount, keywords } = await analyzerRes.json();
 
-    // Extract top 5 keywords from keywordFrequency
-    const sortedKeywords = Object.entries(keywordFrequency || {})
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([word]) => word);
-
-    const keywordString = sortedKeywords.join(', ');
+    // Join keywords into a string for DB storage
+    const keywordString = Array.isArray(keywords)
+      ? keywords.join(', ')
+      : String(keywords);
 
     // Save in DB
     const savedPost = await prisma.post.create({
@@ -49,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       wordCount: savedPost.analysis.wordCount,
-      keywords: sortedKeywords,
+      keywords: savedPost.analysis.keywords.split(',').map(k => k.trim()),
     });
   } catch (err) {
     console.error('API Error:', err);

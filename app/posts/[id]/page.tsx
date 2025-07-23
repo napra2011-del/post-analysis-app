@@ -7,12 +7,8 @@ async function getPost(id: string) {
   return res.json();
 }
 
-interface Props {
-  params: { id: string };
-}
-
-export default async function PostPage(props: Props) {
-  const id = props.params.id;
+export default async function PostPage({ params }: { params: { id: string } }) {
+  const id = params.id;
   const post = await getPost(id);
   if (!post) return <div>Post not found</div>;
 
