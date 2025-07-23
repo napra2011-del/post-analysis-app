@@ -1,4 +1,8 @@
 // app/posts/[id]/page.tsx
+
+// ✅ Ensures route works dynamically
+export const dynamic = 'force-dynamic';
+
 import PostAnalysisClient from '../../../components/PostAnalysisClient';
 
 async function getPost(id: string) {
@@ -7,9 +11,12 @@ async function getPost(id: string) {
   return res.json();
 }
 
-export default async function PostPage({ params }: { params: { id: string } }) {
-  const id = params.id;
-  const post = await getPost(id);
+type Props = {
+  params: { id: string };
+};
+
+export default async function PostPage({ params }: Props) {
+  const post = await getPost(params.id);
   if (!post) return <div>Post not found</div>;
 
   return (
