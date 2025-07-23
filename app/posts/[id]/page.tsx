@@ -1,9 +1,8 @@
-// app/posts/[id]/page.tsx
-
-// ✅ Ensures route works dynamically
-export const dynamic = 'force-dynamic';
-
 import PostAnalysisClient from '../../../components/PostAnalysisClient';
+
+type Props = {
+  params: { id: string };
+};
 
 async function getPost(id: string) {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
@@ -11,9 +10,8 @@ async function getPost(id: string) {
   return res.json();
 }
 
-type Props = {
-  params: { id: string };
-};
+
+export const dynamic = 'force-dynamic';
 
 export default async function PostPage({ params }: Props) {
   const post = await getPost(params.id);
