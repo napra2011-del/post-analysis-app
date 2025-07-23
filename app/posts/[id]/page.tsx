@@ -1,8 +1,8 @@
-import PostAnalysisClient from '../../../components/PostAnalysisClient';
+// app/posts/[id]/page.tsx
 
-type Props = {
-  params: { id: string };
-};
+import PostAnalysisClient from '@/components/PostAnalysisClient';
+
+export const dynamic = 'force-dynamic'; // ✅ Prevent build-time rendering
 
 async function getPost(id: string) {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
@@ -10,10 +10,11 @@ async function getPost(id: string) {
   return res.json();
 }
 
-
-export const dynamic = 'force-dynamic';
-
-export default async function PostPage({ params }: Props) {
+export default async function PostPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const post = await getPost(params.id);
   if (!post) return <div>Post not found</div>;
 
